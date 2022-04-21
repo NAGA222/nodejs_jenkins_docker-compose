@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.3'
 
 services:
 
@@ -15,7 +15,6 @@ services:
   mysql:
     image: mysql:latest
     restart: always
-    
     volumes:
       - backend_demo:/var/lib/mysql
     networks:
@@ -24,20 +23,19 @@ services:
   #Node APP
   nodejs:
     build: .
+    dockerfile: Dockerfile
     container_name: nodejsserver
     volumes:
-      - .: /usr/src/app
+      - .:/usr/src/app
 
-    ports:
-      - "3000: 51005"
+        # ports:
+        # - 3000: 51005
 
 
     environment:
       MONGODB_URL: mongodb://mongo_db:27017
       
-    depends_on:
-      -mongo
-      -mysql
+    depends_on: [mongo,mysql]
 
     networks:
           - example-net
@@ -50,8 +48,8 @@ services:
 
         container_name: ngnix
         hostname: ngnix
-        ports:
-            - "80:80"
+          # ports:
+          # - 80:80
 
         depends_on:
           - nodejs
@@ -60,7 +58,7 @@ services:
           - example-net
 
 volumes:
-  backend_demo: {}
+  backend_demo:
 
 networks:
   example-net:
