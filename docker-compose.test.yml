@@ -1,0 +1,6 @@
+services:
+
+  nginx:
+    expose: 3333
+    environment:
+      Testing: true

@@ -1,0 +1,10 @@
+services:
+  nodejs:
+   environment:
+      production: true      
+
+  nginx:
+    expose: 2222
+    environment:
+      production: true
+

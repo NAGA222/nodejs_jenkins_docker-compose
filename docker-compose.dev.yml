@@ -1,0 +1,6 @@
+services:      
+
+  nginx:
+    expose: 4444
+    environment:
+      development: true

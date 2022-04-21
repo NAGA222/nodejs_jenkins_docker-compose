@@ -16,25 +16,18 @@ services:
     image: mysql:latest
     restart: always
     volumes:
-      - backend_demo:/var/lib/mysql
+      - backend_demo:/var/lib/sql
+  
     networks:
           - example-net
 
   #Node APP
   nodejs:
-    build: .
-    dockerfile: Dockerfile
+    build: ./
     container_name: nodejsserver
     volumes:
       - .:/usr/src/app
 
-        # ports:
-        # - 3000: 51005
-
-
-    environment:
-      MONGODB_URL: mongodb://mongo_db:27017
-      
     depends_on: [mongo,mysql]
 
     networks:
@@ -42,15 +35,17 @@ services:
 
   nginx:
         build:
-            context: ./nginx
-            args:
-                - WEB_SSL=true
+            context: ./
 
         container_name: ngnix
-        hostname: ngnix
-          # ports:
-          # - 80:80
-
+        ports:
+          - "80:80"
+          - "443:443"
+        volumes:
+          - ./data/nginx:/etc/nginx/conf.d
+        certbot:
+          image: certbot/certbot
+        
         depends_on:
           - nodejs
 
