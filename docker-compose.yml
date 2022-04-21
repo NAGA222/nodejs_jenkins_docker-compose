@@ -1,0 +1,70 @@
+version: '3.9'
+
+services:
+
+  #mongo database
+  mongo:
+    image: mongo:latest
+    restart: always
+    volumes:
+      - backend_demo:/data/db
+    networks:
+          - example-net
+
+  #mysql database
+  mysql:
+    image: mysql:latest
+    restart: always
+    
+    volumes:
+      - backend_demo:/var/lib/mysql
+    networks:
+          - example-net
+
+  #Node APP
+  nodejs:
+    build: .
+    container_name: nodejsserver
+    volumes:
+      - .: /usr/src/app
+
+    ports:
+      - "3000: 51005"
+
+
+    environment:
+      MONGODB_URL: mongodb://mongo_db:27017
+      
+    depends_on:
+      -mongo
+      -mysql
+
+    networks:
+          - example-net
+
+  nginx:
+        build:
+            context: ./nginx
+            args:
+                - WEB_SSL=true
+
+        container_name: ngnix
+        hostname: ngnix
+        ports:
+            - "80:80"
+
+        depends_on:
+          - nodejs
+
+        networks:
+          - example-net
+
+volumes:
+  backend_demo: {}
+
+networks:
+  example-net:
+    external: true
+
+
+
