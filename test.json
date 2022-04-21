@@ -1,12 +1,12 @@
 {
   "database": {
     "mongo": {
-      "name": "backend_demo",
+      "name": "backend_test",
       "host": "localhost",
       "port": 27017
     },
     "mysql" : {
-      "name": "backend_demo",
+      "name": "backend_test",
       "username": "root",
       "password": "password",
       "options": {
@@ -29,7 +29,7 @@
   "MixFolder": "./public/uploads/images",
   "MixInsideFolder": "./public/uploads/images/",
   "logging": {
-    "name": "backend-demo",
+    "name": "backend-test",
     "level": "debug",
     "path": "/tmp/node_debug.log"
   },
@@ -38,3 +38,4 @@
     "port" : 51005
   }
 }
+
